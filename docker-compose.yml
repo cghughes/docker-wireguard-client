@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  client01:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "wireguard-docker-client"  
+    hostname: "wireguard-docker-client"
+    environment:
+      #- RABBITMQ_ERLANG_COOKIE=3point142
+      #- RABBITMQ_DEFAULT_USER=admin
+      #- RABBITMQ_DEFAULT_PASS=3point142
+      #- RABBITMQ_NODENAME=rabbit01
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
+    networks:
+      devnetwork:
+        aliases:
+          - client.cgh.dev           
+networks:
+  devnetwork:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"

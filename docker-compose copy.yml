@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  rabbit01:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "rabbit01"  
+    hostname: rabbit01
+    expose:
+      - 5672
+      - 25672
+      - 15672
+    ports:
+      - "5672:5672"
+      - "8082:15672"
+    environment:
+      #- RABBITMQ_ERLANG_COOKIE=3point142
+      #- RABBITMQ_DEFAULT_USER=admin
+      #- RABBITMQ_DEFAULT_PASS=3point142
+      #- RABBITMQ_NODENAME=rabbit01
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
+    networks:
+      devnetwork:
+        aliases:
+          - rabbit01.cgh.dev           
+networks:
+  devnetwork:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+
